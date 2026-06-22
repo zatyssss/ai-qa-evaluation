@@ -12,51 +12,77 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
 }
 
 body{
-    font-family: Arial, sans-serif;
-    background:#f4f6f9;
     height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    background:#f4f6fb;
 }
 
-.chat-container{
-    width:90%;
-    max-width:900px;
-    height:90vh;
-    background:white;
-    border-radius:15px;
-    box-shadow:0 4px 20px rgba(0,0,0,0.15);
+.container{
     display:flex;
-    flex-direction:column;
-    overflow:hidden;
+    height:100vh;
 }
 
-.header{
+.sidebar{
+    width:250px;
     background:#4B3F92;
     color:white;
     padding:20px;
-    font-size:22px;
-    font-weight:bold;
+}
+
+.sidebar h2{
+    margin-bottom:20px;
     text-align:center;
+}
+
+.topic{
+    background:rgba(255,255,255,0.1);
+    padding:12px;
+    margin-bottom:10px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.topic:hover{
+    background:rgba(255,255,255,0.2);
+}
+
+.main{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+}
+
+.header{
+    background:white;
+    padding:20px;
+    text-align:center;
+    font-size:28px;
+    font-weight:bold;
+    color:#4B3F92;
+    border-bottom:1px solid #ddd;
 }
 
 .chat-box{
     flex:1;
     padding:20px;
     overflow-y:auto;
-    background:#f7f9fc;
+    background:#f9f9fc;
 }
 
 .message{
-    margin-bottom:15px;
     max-width:75%;
-    padding:12px;
+    padding:12px 16px;
+    margin-bottom:15px;
     border-radius:12px;
     line-height:1.5;
+}
+
+.bot{
+    background:white;
+    border:1px solid #ddd;
 }
 
 .user{
@@ -65,21 +91,16 @@ body{
     margin-left:auto;
 }
 
-.bot{
-    background:white;
-    border:1px solid #ddd;
-}
-
 .input-area{
     display:flex;
     padding:15px;
-    border-top:1px solid #ddd;
     background:white;
+    border-top:1px solid #ddd;
 }
 
 input{
     flex:1;
-    padding:12px;
+    padding:14px;
     border:1px solid #ccc;
     border-radius:8px;
     font-size:15px;
@@ -87,7 +108,7 @@ input{
 
 button{
     margin-left:10px;
-    padding:12px 25px;
+    padding:14px 25px;
     border:none;
     background:#E35D91;
     color:white;
@@ -105,34 +126,51 @@ button:hover{
 
 <body>
 
-<div class="chat-container">
+<div class="container">
 
 ```
-<div class="header">
-    Ask Loora
+<div class="sidebar">
+
+    <h2>QA Topics</h2>
+
+    <div class="topic">Greeting</div>
+    <div class="topic">Verification</div>
+    <div class="topic">PDPA</div>
+    <div class="topic">Empathy</div>
+    <div class="topic">Solution</div>
+    <div class="topic">Closing</div>
+    <div class="topic">WOW Factor</div>
+
 </div>
 
-<div class="chat-box" id="chatBox">
+<div class="main">
 
-    <div class="message bot">
-        👋 Hi! I'm Loora.<br><br>
-
-        How can I help you today?
+    <div class="header">
+        Ask Loora
     </div>
 
-</div>
+    <div class="chat-box" id="chatBox">
 
-<div class="input-area">
+        <div class="message bot">
+            👋 Welcome to Ask Loora.<br><br>
+            Ask me anything about QA guidelines, SOP, empathy, call handling and quality standards.
+        </div>
 
-    <input
-        type="text"
-        id="userInput"
-        placeholder="Ask Loora anything..."
-    >
+    </div>
 
-    <button onclick="sendMessage()">
-        Send
-    </button>
+    <div class="input-area">
+
+        <input
+            type="text"
+            id="userInput"
+            placeholder="Ask Loora anything..."
+        >
+
+        <button onclick="sendMessage()">
+            Send
+        </button>
+
+    </div>
 
 </div>
 ```
@@ -140,6 +178,31 @@ button:hover{
 </div>
 
 <script>
+
+const knowledgeBase = {
+
+    greeting:
+    "Hi, ABC, I am [Agent Name], how may I assist you today?",
+
+    verification:
+    "Verify customer details and repeat information for confirmation.",
+
+    pdpa:
+    "Follow PDPA and PCI DSS requirements at all times.",
+
+    empathy:
+    "Acknowledge customer emotions and show understanding.",
+
+    solution:
+    "Provide accurate information according to SOP and policy.",
+
+    closing:
+    "Thank you for contacting ABC. Have a nice day.",
+
+    wow:
+    "Deliver a positive customer experience and exceed expectations."
+
+};
 
 function sendMessage(){
 
@@ -149,9 +212,7 @@ function sendMessage(){
     let message =
     input.value.trim();
 
-    if(message === ""){
-        return;
-    }
+    if(message === "") return;
 
     let chatBox =
     document.getElementById("chatBox");
@@ -162,23 +223,32 @@ function sendMessage(){
         </div>
     `;
 
+    let msg =
+    message.toLowerCase();
+
     let reply =
-    "Thank you for your question. AI integration will be connected in the next step.";
+    "Sorry, I couldn't find information related to that topic.";
 
-    if(message.toLowerCase().includes("greeting")){
-        reply =
-        "Good morning/afternoon, thank you for calling ABC Retail Careline. My name is [Agent Name]. How may I assist you today?";
-    }
+    if(msg.includes("greeting"))
+        reply = knowledgeBase.greeting;
 
-    if(message.toLowerCase().includes("email")){
-        reply =
-        "Agent must request customer email address and repeat it back for verification.";
-    }
+    else if(msg.includes("verification"))
+        reply = knowledgeBase.verification;
 
-    if(message.toLowerCase().includes("complaint")){
-        reply =
-        "For complaint cases: Verify details, acknowledge emotion, create escalation ticket, and CSAT is not required.";
-    }
+    else if(msg.includes("pdpa"))
+        reply = knowledgeBase.pdpa;
+
+    else if(msg.includes("empathy"))
+        reply = knowledgeBase.empathy;
+
+    else if(msg.includes("solution"))
+        reply = knowledgeBase.solution;
+
+    else if(msg.includes("closing"))
+        reply = knowledgeBase.closing;
+
+    else if(msg.includes("wow"))
+        reply = knowledgeBase.wow;
 
     chatBox.innerHTML += `
         <div class="message bot">
