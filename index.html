@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QA AI Assistant</title>
+<title>Ask Lura</title>
 
 <style>
 
@@ -14,8 +14,13 @@
 }
 
 body{
-    font-family: Arial, sans-serif;
-    background:#f4f6f9;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(
+        135deg,
+        #D9DCE3 0%,
+        #F2F4F8 50%,
+        #FFFFFF 100%
+    );
     height:100vh;
     display:flex;
     justify-content:center;
@@ -24,77 +29,97 @@ body{
 
 .chat-container{
     width:90%;
-    max-width:900px;
+    max-width:950px;
     height:90vh;
     background:white;
-    border-radius:15px;
-    box-shadow:0 4px 20px rgba(0,0,0,0.15);
+    border-radius:20px;
+    box-shadow:0 15px 40px rgba(75,63,146,0.15);
     display:flex;
     flex-direction:column;
     overflow:hidden;
 }
 
 .header{
-    background:#0066ff;
+    background:#4B3F92;
     color:white;
     padding:20px;
-    font-size:22px;
-    font-weight:bold;
+    text-align:center;
+}
+
+.header h1{
+    font-size:24px;
+    margin-bottom:5px;
+}
+
+.header p{
+    font-size:13px;
+    opacity:0.85;
 }
 
 .chat-box{
     flex:1;
     padding:20px;
     overflow-y:auto;
-    background:#f7f9fc;
+    background:#F7F8FC;
 }
 
 .message{
     margin-bottom:15px;
     max-width:75%;
-    padding:12px;
-    border-radius:12px;
-    line-height:1.5;
+    padding:12px 15px;
+    border-radius:15px;
+    line-height:1.6;
+    word-wrap:break-word;
 }
 
 .user{
-    background:#0066ff;
+    background:#4B3F92;
     color:white;
     margin-left:auto;
+    border-bottom-right-radius:5px;
 }
 
 .bot{
-    background:white;
-    border:1px solid #ddd;
+    background:#F7F3FF;
+    border:1px solid #E5DFFF;
+    color:#333;
+    border-bottom-left-radius:5px;
 }
 
 .input-area{
     display:flex;
     padding:15px;
-    border-top:1px solid #ddd;
     background:white;
+    border-top:1px solid #eee;
 }
 
 input{
     flex:1;
-    padding:12px;
-    border:1px solid #ccc;
-    border-radius:8px;
+    padding:14px;
+    border:1px solid #ddd;
+    border-radius:10px;
     font-size:15px;
+    outline:none;
+}
+
+input:focus{
+    border-color:#4B3F92;
 }
 
 button{
     margin-left:10px;
-    padding:12px 25px;
+    padding:14px 25px;
     border:none;
-    background:#0066ff;
+    background:#E35D91;
     color:white;
-    border-radius:8px;
+    border-radius:10px;
     cursor:pointer;
+    font-weight:bold;
+    transition:0.3s;
 }
 
 button:hover{
-    background:#0052cc;
+    background:#D24A80;
 }
 
 </style>
@@ -106,22 +131,24 @@ button:hover{
 <div class="chat-container">
 
     <div class="header">
-        QA AI Assistant
+        <h1>Ask Lura</h1>
+        <p>Your QA AI Assistant</p>
     </div>
 
     <div class="chat-box" id="chatBox">
 
         <div class="message bot">
-            👋 Hello! I'm your QA Assistant.<br><br>
+            👋 Hello! I'm Lura.<br><br>
 
-            You can ask:
+            I can help with:
             <br><br>
 
-            • What is the correct greeting?<br>
-            • What is email probing?<br>
-            • What should I do for complaint cases?<br>
-            • How do I acknowledge customer emotion?<br>
-            • Score this call transcript
+            ✅ QA Guidelines<br>
+            ✅ Greeting Standards<br>
+            ✅ Email Probing<br>
+            ✅ Complaint Handling<br>
+            ✅ Customer Empathy<br>
+            ✅ Call Scoring Support
         </div>
 
     </div>
@@ -131,7 +158,7 @@ button:hover{
         <input
             type="text"
             id="userInput"
-            placeholder="Type your question here..."
+            placeholder="Ask Lura anything..."
         >
 
         <button onclick="sendMessage()">
@@ -166,21 +193,46 @@ function sendMessage(){
     `;
 
     let reply =
-    "Thank you for your question. AI integration will be connected in the next step.";
+    "Thank you for your question. AI integration will be connected in the next phase.";
 
-    if(message.toLowerCase().includes("greeting")){
+    let msg = message.toLowerCase();
+
+    if(
+        msg.includes("greeting") ||
+        msg.includes("greet")
+    ){
         reply =
         "Good morning/afternoon, thank you for calling ABC Retail Careline. My name is [Agent Name]. How may I assist you today?";
     }
 
-    if(message.toLowerCase().includes("email")){
+    else if(
+        msg.includes("email") ||
+        msg.includes("probing")
+    ){
         reply =
-        "Agent must request customer email address and repeat it back for verification.";
+        "Agent must request the customer's email address and repeat it back for verification.";
     }
 
-    if(message.toLowerCase().includes("complaint")){
+    else if(
+        msg.includes("complaint")
+    ){
         reply =
-        "For complaint cases: Verify details, acknowledge emotion, create escalation ticket, and CSAT is not required.";
+        "For complaint cases: Verify customer details, acknowledge emotion, create escalation ticket and document the issue clearly.";
+    }
+
+    else if(
+        msg.includes("emotion") ||
+        msg.includes("empathy")
+    ){
+        reply =
+        "Acknowledge the customer's concern using empathy statements such as: 'I understand how frustrating this situation must be for you.'";
+    }
+
+    else if(
+        msg.includes("score")
+    ){
+        reply =
+        "Please paste the call transcript and I will assist with QA evaluation criteria.";
     }
 
     chatBox.innerHTML += `
