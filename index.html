@@ -12,77 +12,62 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body{
+    background:#f4f6f9;
     height:100vh;
-    background:#f4f6fb;
-}
-
-.container{
     display:flex;
-    height:100vh;
+    justify-content:center;
+    align-items:center;
 }
 
-.sidebar{
-    width:250px;
-    background:#4B3F92;
-    color:white;
-    padding:20px;
-}
-
-.sidebar h2{
-    margin-bottom:20px;
-    text-align:center;
-}
-
-.topic{
-    background:rgba(255,255,255,0.1);
-    padding:12px;
-    margin-bottom:10px;
-    border-radius:8px;
-    cursor:pointer;
-}
-
-.topic:hover{
-    background:rgba(255,255,255,0.2);
-}
-
-.main{
-    flex:1;
+.chat-container{
+    width:90%;
+    max-width:900px;
+    height:90vh;
+    background:white;
+    border-radius:16px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.12);
     display:flex;
     flex-direction:column;
+    overflow:hidden;
 }
 
 .header{
     background:white;
-    padding:20px;
+    border-bottom:1px solid #e5e7eb;
+    padding:16px;
     text-align:center;
-    font-size:28px;
-    font-weight:bold;
+}
+
+.title{
+    font-size:20px;
+    font-weight:600;
     color:#4B3F92;
-    border-bottom:1px solid #ddd;
+}
+
+.subtitle{
+    font-size:12px;
+    color:#888;
+    margin-top:3px;
 }
 
 .chat-box{
     flex:1;
     padding:20px;
     overflow-y:auto;
-    background:#f9f9fc;
+    background:#f8f9fc;
 }
 
 .message{
+    margin-bottom:12px;
     max-width:75%;
-    padding:12px 16px;
-    margin-bottom:15px;
+    padding:10px 14px;
     border-radius:12px;
     line-height:1.5;
-}
-
-.bot{
-    background:white;
-    border:1px solid #ddd;
+    font-size:14px;
 }
 
 .user{
@@ -91,29 +76,42 @@ body{
     margin-left:auto;
 }
 
+.bot{
+    background:white;
+    border:1px solid #e5e7eb;
+    color:#333;
+}
+
 .input-area{
     display:flex;
     padding:15px;
+    border-top:1px solid #e5e7eb;
     background:white;
-    border-top:1px solid #ddd;
 }
 
 input{
     flex:1;
-    padding:14px;
-    border:1px solid #ccc;
-    border-radius:8px;
-    font-size:15px;
+    padding:12px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    font-size:14px;
+    outline:none;
+}
+
+input:focus{
+    border-color:#4B3F92;
 }
 
 button{
     margin-left:10px;
-    padding:14px 25px;
+    padding:12px 22px;
     border:none;
     background:#E35D91;
     color:white;
-    border-radius:8px;
+    border-radius:10px;
     cursor:pointer;
+    font-size:14px;
+    font-weight:500;
 }
 
 button:hover{
@@ -126,51 +124,42 @@ button:hover{
 
 <body>
 
-<div class="container">
+<div class="chat-container">
 
 ```
-<div class="sidebar">
+<div class="header">
+    <div class="title">Ask Loora</div>
+    <div class="subtitle">QA Knowledge Assistant</div>
+</div>
 
-    <h2>QA Topics</h2>
+<div class="chat-box" id="chatBox">
 
-    <div class="topic">Greeting</div>
-    <div class="topic">Verification</div>
-    <div class="topic">PDPA</div>
-    <div class="topic">Empathy</div>
-    <div class="topic">Solution</div>
-    <div class="topic">Closing</div>
-    <div class="topic">WOW Factor</div>
+    <div class="message bot">
+        <strong>Welcome to Ask Loora</strong><br><br>
+
+        Your QA Knowledge Assistant.<br><br>
+
+        Ask me about:
+        <br>• Greeting
+        <br>• Email Verification
+        <br>• Complaint Handling
+        <br>• Empathy
+        <br>• Quality Standards
+    </div>
 
 </div>
 
-<div class="main">
+<div class="input-area">
 
-    <div class="header">
-        Ask Loora
-    </div>
+    <input
+        type="text"
+        id="userInput"
+        placeholder="Ask Loora anything..."
+    >
 
-    <div class="chat-box" id="chatBox">
-
-        <div class="message bot">
-            👋 Welcome to Ask Loora.<br><br>
-            Ask me anything about QA guidelines, SOP, empathy, call handling and quality standards.
-        </div>
-
-    </div>
-
-    <div class="input-area">
-
-        <input
-            type="text"
-            id="userInput"
-            placeholder="Ask Loora anything..."
-        >
-
-        <button onclick="sendMessage()">
-            Send
-        </button>
-
-    </div>
+    <button onclick="sendMessage()">
+        Send
+    </button>
 
 </div>
 ```
@@ -178,31 +167,6 @@ button:hover{
 </div>
 
 <script>
-
-const knowledgeBase = {
-
-    greeting:
-    "Hi, ABC, I am [Agent Name], how may I assist you today?",
-
-    verification:
-    "Verify customer details and repeat information for confirmation.",
-
-    pdpa:
-    "Follow PDPA and PCI DSS requirements at all times.",
-
-    empathy:
-    "Acknowledge customer emotions and show understanding.",
-
-    solution:
-    "Provide accurate information according to SOP and policy.",
-
-    closing:
-    "Thank you for contacting ABC. Have a nice day.",
-
-    wow:
-    "Deliver a positive customer experience and exceed expectations."
-
-};
 
 function sendMessage(){
 
@@ -212,7 +176,9 @@ function sendMessage(){
     let message =
     input.value.trim();
 
-    if(message === "") return;
+    if(message === ""){
+        return;
+    }
 
     let chatBox =
     document.getElementById("chatBox");
@@ -223,32 +189,28 @@ function sendMessage(){
         </div>
     `;
 
-    let msg =
-    message.toLowerCase();
-
     let reply =
-    "Sorry, I couldn't find information related to that topic.";
+    "Thank you for your question. AI integration will be connected in the next step.";
 
-    if(msg.includes("greeting"))
-        reply = knowledgeBase.greeting;
+    if(message.toLowerCase().includes("greeting")){
+        reply =
+        "Hi, ABC. I am [Agent Name]. How may I assist you today?";
+    }
 
-    else if(msg.includes("verification"))
-        reply = knowledgeBase.verification;
+    if(message.toLowerCase().includes("email")){
+        reply =
+        "Agent must request the customer's email address and repeat it back for verification.";
+    }
 
-    else if(msg.includes("pdpa"))
-        reply = knowledgeBase.pdpa;
+    if(message.toLowerCase().includes("complaint")){
+        reply =
+        "Verify details, acknowledge customer emotions and create an escalation ticket when required.";
+    }
 
-    else if(msg.includes("empathy"))
-        reply = knowledgeBase.empathy;
-
-    else if(msg.includes("solution"))
-        reply = knowledgeBase.solution;
-
-    else if(msg.includes("closing"))
-        reply = knowledgeBase.closing;
-
-    else if(msg.includes("wow"))
-        reply = knowledgeBase.wow;
+    if(message.toLowerCase().includes("empathy")){
+        reply =
+        "Use empathy statements such as: I understand how frustrating this situation must be for you.";
+    }
 
     chatBox.innerHTML += `
         <div class="message bot">
