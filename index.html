@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ask Loora</title>
+<title>Loora AI Assistant</title>
 
 <style>
 *{
@@ -13,39 +13,50 @@
     font-family: Arial, sans-serif;
 }
 
+/* DARK PREMIUM BACKGROUND */
 body{
-    background: linear-gradient(135deg, #0f172a, #1e293b);
+    background: #05010a;
     display:flex;
     justify-content:center;
     align-items:center;
     height:100vh;
 }
 
-/* CONTAINER */
+/* CHAT CONTAINER */
 .chat-container{
     width:420px;
     height:620px;
-    background:#0b1220;
+    background:#0b0613;
     border-radius:20px;
     display:flex;
     flex-direction:column;
     overflow:hidden;
-    box-shadow:0 10px 30px rgba(0,0,0,0.5);
+    box-shadow:0 10px 40px rgba(0,0,0,0.7);
+    border:1px solid rgba(255,255,255,0.05);
 }
 
-/* HEADER */
+/* HEADER (BRAND MATCHED) */
 .chat-header{
-    background: linear-gradient(90deg, #2563eb, #06b6d4);
-    padding:15px;
-    color:white;
-    font-weight:bold;
     display:flex;
     align-items:center;
-    gap:10px;
+    gap:12px;
+    padding:12px 15px;
+    background: linear-gradient(90deg, #2b1741, #d21e2f);
+    color:white;
 }
 
+/* LOGO */
+.chat-header img{
+    width:35px;
+    height:35px;
+    object-fit:contain;
+    border-radius:6px;
+}
+
+/* TITLE */
 .chat-header span{
-    font-size:18px;
+    font-size:16px;
+    font-weight:bold;
 }
 
 /* CHAT BOX */
@@ -58,7 +69,7 @@ body{
     gap:10px;
 }
 
-/* MESSAGE */
+/* MESSAGE BUBBLE */
 .msg{
     padding:10px 14px;
     border-radius:15px;
@@ -68,15 +79,17 @@ body{
     white-space:pre-line;
 }
 
+/* BOT */
 .bot{
-    background:#1f2937;
-    color:white;
+    background:#1a1026;
+    color:#fff;
     align-self:flex-start;
     border-bottom-left-radius:5px;
 }
 
+/* USER */
 .user{
-    background:#2563eb;
+    background:#d21e2f;
     color:white;
     align-self:flex-end;
     border-bottom-right-radius:5px;
@@ -86,7 +99,7 @@ body{
 .chat-input{
     display:flex;
     padding:10px;
-    background:#111827;
+    background:#0c0714;
 }
 
 .chat-input input{
@@ -101,7 +114,7 @@ body{
     margin-left:10px;
     padding:10px 15px;
     border:none;
-    background:#2563eb;
+    background:#d21e2f;
     color:white;
     border-radius:10px;
     cursor:pointer;
@@ -115,10 +128,11 @@ body{
 
     <!-- HEADER -->
     <div class="chat-header">
-        🤖 <span>Loora AI Assistant</span>
+        <img src="/mnt/data/6ab6dd46-2b84-43b5-b0d2-a84873911b93.png" alt="Company Logo">
+         <span>Ask Loora</span>
     </div>
 
-    <!-- CHAT -->
+    <!-- CHAT BOX -->
     <div class="chat-box" id="chatBox">
 
         <!-- GREETING -->
@@ -131,55 +145,13 @@ How may I help you today?
 
     <!-- INPUT -->
     <div class="chat-input">
-        <input type="text" id="userInput" placeholder="Ask about QA, SOP, PDPA...">
+        <input type="text" id="userInput" placeholder="Ask about QA, PDPA, SOP...">
         <button onclick="sendMsg()">Send</button>
     </div>
 
 </div>
 
 <script>
-
-// QA SCORECARD DATA
-const qaData = {
-"call opening": `
-1. Call Opening
-- Standard greeting: “Hi, TNG eWallet, I am <agent name>...”
-- Greet in correct language
-- Friendly, clear, cheerful
-
-- Verify customer name & number
-- Mandatory verification if applicable
-`,
-
-"pdpa": `
-2. PDPA Compliance (CRITICAL ⚠️)
-- Must follow PDPA & PCI DSS
-- Failure = ZTP / dismissal risk
-`,
-
-"call management": `
-3. Call Management
-- Follow Head → Body → Tail structure
-- No interruption
-- Check customer history
-- Empathy & ownership
-`,
-
-"solution": `
-4. Solution Match
-- Follow SOP / Macro
-- Provide accurate information
-- Offer alternative solutions
-- Give SLA & next steps
-`,
-
-"closing": `
-7. Call Exit
-- Offer CSAT survey if needed
-- “Thank you for calling TNG eWallet. Have a nice day.”
-`
-};
-
 function sendMsg(){
     let input = document.getElementById("userInput");
     let chatBox = document.getElementById("chatBox");
@@ -192,45 +164,12 @@ function sendMsg(){
     userMsg.innerText = input.value;
     chatBox.appendChild(userMsg);
 
-    let text = input.value.toLowerCase();
-
-    // BOT RESPONSE
-    let botReply = "Sorry, I didn't understand. Try: QA, PDPA, call opening, closing.";
-
-    // QA LOGIC
-    if(text.includes("pdpa")){
-        botReply = qaData["pdpa"];
-    }
-    else if(text.includes("call opening")){
-        botReply = qaData["call opening"];
-    }
-    else if(text.includes("call management")){
-        botReply = qaData["call management"];
-    }
-    else if(text.includes("solution")){
-        botReply = qaData["solution"];
-    }
-    else if(text.includes("closing")){
-        botReply = qaData["closing"];
-    }
-    else if(text.includes("qa")){
-        botReply = `
-📊 QA SCORECARD (Loora AI)
-
-Ask:
-- call opening
-- PDPA
-- call management
-- solution
-- closing
-        `;
-    }
-
+    // BOT MESSAGE
     let botMsg = document.createElement("div");
     botMsg.className = "msg bot";
 
     setTimeout(()=>{
-        botMsg.innerText = botReply;
+        botMsg.innerText = "Got it 👍 I will process your request: " + input.value;
         chatBox.appendChild(botMsg);
         chatBox.scrollTop = chatBox.scrollHeight;
     }, 500);
@@ -238,7 +177,6 @@ Ask:
     input.value = "";
     chatBox.scrollTop = chatBox.scrollHeight;
 }
-
 </script>
 
 </body>
