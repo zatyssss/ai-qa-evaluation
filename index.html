@@ -3,250 +3,57 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Assistant</title>
+<title>Ask Loora</title>
 
 <style>
-
-/* RESET */
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI', sans-serif;
-}
-
-/* BRAND BACKGROUND */
 body{
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    background: linear-gradient(
-        135deg,
-        #483D8C 0%,
-        #6A5ACD 35%,
-        #DA6F9B 100%
-    );
-}
-
-/* MAIN CHAT BOX */
-.chat-container{
-    width:92%;
-    max-width:900px;
-    height:90vh;
-    background:rgba(255,255,255,0.95);
-    border-radius:18px;
-    overflow:hidden;
-    display:flex;
-    flex-direction:column;
-    box-shadow:0 15px 40px rgba(0,0,0,0.25);
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+    margin: 0;
 }
 
 /* HEADER */
 .header{
-    background:linear-gradient(90deg,#483D8C,#DA6F9B);
-    color:white;
-    padding:18px;
-    text-align:center;
+    text-align: center;
+    padding: 30px 20px;
+    background: linear-gradient(135deg, #4a90e2, #7b61ff);
+    color: white;
 }
 
-.title{
-    font-size:20px;
-    font-weight:600;
+.header h1{
+    margin: 0;
+    font-size: 32px;
+    font-weight: bold;
 }
 
-.subtitle{
-    font-size:12px;
-    opacity:0.9;
+.header p{
+    margin-top: 8px;
+    font-size: 14px;
+    opacity: 0.9;
 }
 
-/* CHAT AREA */
-.chat-box{
-    flex:1;
-    padding:20px;
-    overflow-y:auto;
-    background:#f6f7fb;
+/* CHAT BOX (optional style) */
+.container{
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
-
-/* MESSAGE STYLE */
-.message{
-    max-width:75%;
-    padding:12px 14px;
-    margin-bottom:12px;
-    border-radius:14px;
-    font-size:14px;
-    line-height:1.5;
-    animation:fadeIn 0.2s ease-in-out;
-}
-
-@keyframes fadeIn{
-    from{opacity:0; transform:translateY(6px);}
-    to{opacity:1; transform:translateY(0);}
-}
-
-/* USER */
-.user{
-    background:#483D8C;
-    color:white;
-    margin-left:auto;
-    border-bottom-right-radius:4px;
-}
-
-/* BOT */
-.bot{
-    background:white;
-    border:1px solid #e5e7eb;
-    color:#333;
-    border-bottom-left-radius:4px;
-}
-
-/* INPUT AREA */
-.input-area{
-    display:flex;
-    padding:12px;
-    border-top:1px solid #ddd;
-    background:white;
-}
-
-input{
-    flex:1;
-    padding:12px;
-    border:1px solid #ddd;
-    border-radius:10px;
-    outline:none;
-}
-
-input:focus{
-    border-color:#483D8C;
-}
-
-button{
-    margin-left:10px;
-    padding:12px 18px;
-    border:none;
-    border-radius:10px;
-    background:#DA6F9B;
-    color:white;
-    cursor:pointer;
-    font-weight:500;
-}
-
-button:disabled{
-    opacity:0.6;
-}
-
-/* typing */
-.typing{
-    font-style:italic;
-    color:#888;
-    font-size:13px;
-}
-
 </style>
 </head>
 
 <body>
 
-<div class="chat-container">
-
-    <!-- HEADER -->
-    <div class="header">
-        <div class="title">Loora AI Assistant</div>
-        <div class="subtitle">QA Knowledge Support System</div>
-    </div>
-
-    <!-- CHAT BOX -->
-    <div class="chat-box" id="chatBox">
-
-        <div class="message bot">
-            👋 Hi! I’m your AI Assistant.<br><br>
-            You can ask me about QA rules, handling process, or support workflow.
-        </div>
-
-    </div>
-
-    <!-- INPUT -->
-    <div class="input-area">
-        <input id="userInput" placeholder="Type your message...">
-        <button id="sendBtn" onclick="sendMessage()">Send</button>
-    </div>
-
+<div class="header">
+    <h1>Ask Loora</h1>
+    <p>Loora AI Assistant - QA Knowledge Support System</p>
 </div>
 
-<script>
-
-function getReply(text){
-
-    text = text.toLowerCase();
-
-    if(text.includes("greeting")){
-        return "Hi 👋 How may I assist you today?";
-    }
-
-    if(text.includes("email")){
-        return "Please request customer email and repeat it back for verification.";
-    }
-
-    if(text.includes("complaint")){
-        return "Acknowledge issue, show empathy, and escalate if necessary.";
-    }
-
-    if(text.includes("empathy")){
-        return "Example: I understand how frustrating this situation must be for you.";
-    }
-
-    return "Thank you for your question. AI system will be connected soon.";
-}
-
-function sendMessage(){
-
-    let input = document.getElementById("userInput");
-    let text = input.value.trim();
-    if(text === "") return;
-
-    let chatBox = document.getElementById("chatBox");
-    let btn = document.getElementById("sendBtn");
-
-    // USER MESSAGE
-    chatBox.innerHTML += `<div class="message user">${text}</div>`;
-    input.value = "";
-
-    // typing
-    let typing = document.createElement("div");
-    typing.className = "message bot typing";
-    typing.innerHTML = "AI is thinking...";
-    chatBox.appendChild(typing);
-
-    chatBox.scrollTop = chatBox.scrollHeight;
-
-    btn.disabled = true;
-
-    setTimeout(() => {
-
-        typing.remove();
-
-        let reply = getReply(text);
-
-        chatBox.innerHTML += `<div class="message bot">${reply}</div>`;
-
-        chatBox.scrollTop = chatBox.scrollHeight;
-
-        btn.disabled = false;
-
-    }, 900);
-
-}
-
-// ENTER KEY
-document.getElementById("userInput")
-.addEventListener("keypress", function(e){
-    if(e.key === "Enter"){
-        sendMessage();
-    }
-});
-
-</script>
+<div class="container">
+    <!-- chatbot content kau letak sini -->
+</div>
 
 </body>
 </html>
