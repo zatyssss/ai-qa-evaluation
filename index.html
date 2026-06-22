@@ -2,182 +2,142 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<title>Loora Chatbot</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Loora AI Assistant</title>
 
 <style>
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family: Arial, sans-serif;
+    font-family:Arial, sans-serif;
 }
 
-/* DARK PREMIUM BACKGROUND */
 body{
-    background: #05010a;
+    height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
-    height:100vh;
+
+    /* background ikut logo */
+    background: linear-gradient(135deg, #766AAE, #853D76);
 }
 
 /* CHAT CONTAINER */
-.chat-container{
-    width:420px;
-    height:620px;
-    background:#0b0613;
+.chatbot{
+    width:370px;
+    height:600px;
+    background:white;
     border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 15px 35px rgba(0,0,0,0.25);
     display:flex;
     flex-direction:column;
-    overflow:hidden;
-    box-shadow:0 10px 40px rgba(0,0,0,0.7);
-    border:1px solid rgba(255,255,255,0.05);
 }
 
-/* HEADER (BRAND MATCHED) */
-.chat-header{
+/* HEADER */
+.header{
+    background: linear-gradient(135deg, #766AAE, #853D76);
+    color:white;
+    padding:15px;
     display:flex;
     align-items:center;
-    gap:12px;
-    padding:12px 15px;
-    background: linear-gradient(90deg, #2b1741, #d21e2f);
-    color:white;
-}
-
-/* LOGO */
-.chat-header img{
-    width:35px;
-    height:35px;
-    object-fit:contain;
-    border-radius:6px;
-}
-
-/* TITLE */
-.chat-header span{
-    font-size:16px;
-    font-weight:bold;
-}
-
-/* CHAT BOX */
-.chat-box{
-    flex:1;
-    padding:15px;
-    overflow-y:auto;
-    display:flex;
-    flex-direction:column;
     gap:10px;
 }
 
-/* MESSAGE BUBBLE */
-.msg{
-    padding:10px 14px;
-    border-radius:15px;
-    max-width:85%;
-    font-size:13.5px;
-    line-height:1.4;
-    white-space:pre-line;
+/* logo dot style */
+.dot{
+    width:12px;
+    height:12px;
+    background:#B23241;
+    border-radius:50%;
+    box-shadow:0 0 0 3px white;
 }
 
-/* BOT */
-.bot{
-    background:#1a1026;
-    color:#fff;
-    align-self:flex-start;
-    border-bottom-left-radius:5px;
+.header h3{
+    font-size:16px;
 }
 
-/* USER */
-.user{
-    background:#d21e2f;
-    color:white;
-    align-self:flex-end;
-    border-bottom-right-radius:5px;
-}
-
-/* INPUT */
-.chat-input{
-    display:flex;
-    padding:10px;
-    background:#0c0714;
-}
-
-.chat-input input{
+/* CHAT AREA */
+.chat{
     flex:1;
     padding:10px;
-    border:none;
+    overflow-y:auto;
+    background:#f7f7fb;
+}
+
+/* BOT MESSAGE */
+.bot{
+    background:#e9e6f7;
+    padding:10px;
+    margin:8px;
+    border-radius:10px;
+    max-width:80%;
+}
+
+/* USER MESSAGE */
+.user{
+    background:#B23241;
+    color:white;
+    padding:10px;
+    margin:8px;
+    border-radius:10px;
+    max-width:80%;
+    margin-left:auto;
+}
+
+/* INPUT AREA */
+.input-box{
+    display:flex;
+    padding:10px;
+    border-top:1px solid #ddd;
+}
+
+.input-box input{
+    flex:1;
+    padding:10px;
+    border:1px solid #ccc;
     border-radius:10px;
     outline:none;
 }
 
-.chat-input button{
-    margin-left:10px;
-    padding:10px 15px;
-    border:none;
-    background:#d21e2f;
+.input-box button{
+    background:#766AAE;
     color:white;
+    border:none;
+    padding:10px 15px;
+    margin-left:8px;
     border-radius:10px;
     cursor:pointer;
+}
+
+.input-box button:hover{
+    background:#853D76;
 }
 </style>
 </head>
 
 <body>
 
-<div class="chat-container">
+<div class="chatbot">
 
-    <!-- HEADER -->
-    <div class="chat-header">
-        <img src="/mnt/data/6ab6dd46-2b84-43b5-b0d2-a84873911b93.png" alt="Company Logo">
-         <span>Ask Loora</span>
+    <div class="header">
+        <div class="dot"></div>
+        <h3>Loora AI Assistant</h3>
     </div>
 
-    <!-- CHAT BOX -->
-    <div class="chat-box" id="chatBox">
-
-        <!-- GREETING -->
-        <div class="msg bot">
-Hi 👋 I’m Loora Assistant.
-How may I help you today?
-        </div>
-
+    <div class="chat">
+        <div class="bot">Hello! How can I help you today?</div>
+        <div class="user">Hi!</div>
+        <div class="bot">Saya Loora AI 👋</div>
     </div>
 
-    <!-- INPUT -->
-    <div class="chat-input">
-        <input type="text" id="userInput" placeholder="Ask about QA, PDPA, SOP...">
-        <button onclick="sendMsg()">Send</button>
+    <div class="input-box">
+        <input type="text" placeholder="Type message...">
+        <button>Send</button>
     </div>
 
 </div>
-
-<script>
-function sendMsg(){
-    let input = document.getElementById("userInput");
-    let chatBox = document.getElementById("chatBox");
-
-    if(input.value.trim() === "") return;
-
-    // USER MESSAGE
-    let userMsg = document.createElement("div");
-    userMsg.className = "msg user";
-    userMsg.innerText = input.value;
-    chatBox.appendChild(userMsg);
-
-    // BOT MESSAGE
-    let botMsg = document.createElement("div");
-    botMsg.className = "msg bot";
-
-    setTimeout(()=>{
-        botMsg.innerText = "Got it 👍 I will process your request: " + input.value;
-        chatBox.appendChild(botMsg);
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }, 500);
-
-    input.value = "";
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
-</script>
 
 </body>
 </html>
