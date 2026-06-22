@@ -1,9 +1,10 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ask Lura</title>
+<title>Ask Loora</title>
 
 <style>
 
@@ -14,8 +15,8 @@
 }
 
 body{
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: linear-gradient(
+    font-family:'Segoe UI', Arial, sans-serif;
+    background:linear-gradient(
         135deg,
         #D9DCE3 0%,
         #F2F4F8 50%,
@@ -42,18 +43,24 @@ body{
 .header{
     background:#4B3F92;
     color:white;
-    padding:20px;
-    text-align:center;
+    padding:15px 25px;
+    display:flex;
+    align-items:center;
+    position:relative;
 }
 
-.header h1{
-    font-size:24px;
-    margin-bottom:5px;
+.logo-section img{
+    height:45px;
+    width:auto;
 }
 
-.header p{
-    font-size:13px;
-    opacity:0.85;
+.title-section{
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:28px;
+    font-weight:700;
+    letter-spacing:0.5px;
 }
 
 .chat-box{
@@ -130,42 +137,43 @@ button:hover{
 
 <div class="chat-container">
 
-    <div class="header">
-        <h1>Ask Lura</h1>
-        <p>Your QA AI Assistant</p>
+```
+<div class="header">
+
+    <div class="logo-section">
+        <img src="logo.png" alt="Company Logo">
     </div>
 
-    <div class="chat-box" id="chatBox">
-
-        <div class="message bot">
-            👋 Hello! I'm Lura.<br><br>
-
-            I can help with:
-            <br><br>
-
-            ✅ QA Guidelines<br>
-            ✅ Greeting Standards<br>
-            ✅ Email Probing<br>
-            ✅ Complaint Handling<br>
-            ✅ Customer Empathy<br>
-            ✅ Call Scoring Support
-        </div>
-
+    <div class="title-section">
+        Ask Loora
     </div>
 
-    <div class="input-area">
+</div>
 
-        <input
-            type="text"
-            id="userInput"
-            placeholder="Ask Lura anything..."
-        >
+<div class="chat-box" id="chatBox">
 
-        <button onclick="sendMessage()">
-            Send
-        </button>
+    <div class="message bot">
+        👋 Hi! I'm Loora.<br><br>
 
+        How can I help you today?
     </div>
+
+</div>
+
+<div class="input-area">
+
+    <input
+        type="text"
+        id="userInput"
+        placeholder="Ask Loora anything..."
+    >
+
+    <button onclick="sendMessage()">
+        Send
+    </button>
+
+</div>
+```
 
 </div>
 
@@ -197,40 +205,27 @@ function sendMessage(){
 
     let msg = message.toLowerCase();
 
-    if(
-        msg.includes("greeting") ||
-        msg.includes("greet")
-    ){
+    if(msg.includes("greeting") || msg.includes("greet")){
         reply =
         "Good morning/afternoon, thank you for calling ABC Retail Careline. My name is [Agent Name]. How may I assist you today?";
     }
 
-    else if(
-        msg.includes("email") ||
-        msg.includes("probing")
-    ){
+    else if(msg.includes("email") || msg.includes("probing")){
         reply =
         "Agent must request the customer's email address and repeat it back for verification.";
     }
 
-    else if(
-        msg.includes("complaint")
-    ){
+    else if(msg.includes("complaint")){
         reply =
-        "For complaint cases: Verify customer details, acknowledge emotion, create escalation ticket and document the issue clearly.";
+        "For complaint cases: Verify details, acknowledge customer concerns, create escalation ticket and document the issue clearly.";
     }
 
-    else if(
-        msg.includes("emotion") ||
-        msg.includes("empathy")
-    ){
+    else if(msg.includes("empathy") || msg.includes("emotion")){
         reply =
-        "Acknowledge the customer's concern using empathy statements such as: 'I understand how frustrating this situation must be for you.'";
+        "Use empathy statements such as: 'I understand how frustrating this situation must be for you.'";
     }
 
-    else if(
-        msg.includes("score")
-    ){
+    else if(msg.includes("score")){
         reply =
         "Please paste the call transcript and I will assist with QA evaluation criteria.";
     }
