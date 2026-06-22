@@ -1,157 +1,210 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI QA Evaluation</title>
+<title>QA AI Assistant</title>
 
 <style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
 body{
     font-family: Arial, sans-serif;
     background:#f4f6f9;
-    margin:0;
-    padding:30px;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 
-.container{
-    max-width:1000px;
-    margin:auto;
-}
-
-.card{
+.chat-container{
+    width:90%;
+    max-width:900px;
+    height:90vh;
     background:white;
+    border-radius:15px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.15);
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+}
+
+.header{
+    background:#0066ff;
+    color:white;
     padding:20px;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.chat-box{
+    flex:1;
+    padding:20px;
+    overflow-y:auto;
+    background:#f7f9fc;
+}
+
+.message{
+    margin-bottom:15px;
+    max-width:75%;
+    padding:12px;
     border-radius:12px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+    line-height:1.5;
 }
 
-h1{
-    margin-top:0;
+.user{
+    background:#0066ff;
+    color:white;
+    margin-left:auto;
 }
 
-textarea{
-    width:100%;
-    height:250px;
-    padding:15px;
-    border:1px solid #ccc;
-    border-radius:8px;
-    resize:vertical;
-    font-size:14px;
-}
-
-button{
-    margin-top:15px;
-    padding:12px 25px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:16px;
-}
-
-.result{
-    margin-top:25px;
-    padding:20px;
-    background:#fafafa;
-    border-radius:8px;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-    margin-top:15px;
-}
-
-table, th, td{
+.bot{
+    background:white;
     border:1px solid #ddd;
 }
 
-th, td{
-    padding:10px;
-    text-align:left;
+.input-area{
+    display:flex;
+    padding:15px;
+    border-top:1px solid #ddd;
+    background:white;
 }
+
+input{
+    flex:1;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:15px;
+}
+
+button{
+    margin-left:10px;
+    padding:12px 25px;
+    border:none;
+    background:#0066ff;
+    color:white;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0052cc;
+}
+
 </style>
 
 </head>
 
 <body>
 
-<div class="container">
-    <div class="card">
+<div class="chat-container">
 
-```
-    <h1>AI QA Evaluation</h1>
-
-    <label>Paste Call Transcript</label>
-
-    <textarea id="transcript" placeholder="Paste transcript here..."></textarea>
-
-    <button onclick="evaluateQA()">Evaluate</button>
-
-    <div class="result" id="result">
-        Waiting for evaluation...
+    <div class="header">
+        QA AI Assistant
     </div>
 
-</div>
-```
+    <div class="chat-box" id="chatBox">
+
+        <div class="message bot">
+            👋 Hello! I'm your QA Assistant.<br><br>
+
+            You can ask:
+            <br><br>
+
+            • What is the correct greeting?<br>
+            • What is email probing?<br>
+            • What should I do for complaint cases?<br>
+            • How do I acknowledge customer emotion?<br>
+            • Score this call transcript
+        </div>
+
+    </div>
+
+    <div class="input-area">
+
+        <input
+            type="text"
+            id="userInput"
+            placeholder="Type your question here..."
+        >
+
+        <button onclick="sendMessage()">
+            Send
+        </button>
+
+    </div>
 
 </div>
 
 <script>
 
-function evaluateQA(){
+function sendMessage(){
 
-const transcript =
-document.getElementById("transcript").value;
+    let input =
+    document.getElementById("userInput");
 
-if(!transcript){
-    alert("Please paste a transcript.");
-    return;
-}
+    let message =
+    input.value.trim();
 
-document.getElementById("result").innerHTML = `
+    if(message === ""){
+        return;
+    }
 
-<h2>QA Evaluation Result</h2>
+    let chatBox =
+    document.getElementById("chatBox");
 
-<p><strong>Total Score:</strong> 87/100</p>
+    chatBox.innerHTML += `
+        <div class="message user">
+            ${message}
+        </div>
+    `;
 
-<table>
-<tr>
-<th>Criteria</th>
-<th>Score</th>
-</tr>
+    let reply =
+    "Thank you for your question. AI integration will be connected in the next step.";
 
-<tr><td>Greeting & Introduction</td><td>10/10</td></tr>
-<tr><td>Verify Caller Details</td><td>10/10</td></tr>
-<tr><td>Understanding Issue</td><td>8/10</td></tr>
-<tr><td>Acknowledge Emotion</td><td>7/10</td></tr>
-<tr><td>Holding Technique</td><td>10/10</td></tr>
-<tr><td>Unhold Technique</td><td>5/5</td></tr>
-<tr><td>Escalation Ticket</td><td>10/10</td></tr>
-<tr><td>Email Probing</td><td>7/10</td></tr>
-<tr><td>CSAT</td><td>0/5</td></tr>
-<tr><td>Confirm Satisfaction</td><td>10/10</td></tr>
-<tr><td>Closing</td><td>10/10</td></tr>
+    if(message.toLowerCase().includes("greeting")){
+        reply =
+        "Good morning/afternoon, thank you for calling ABC Retail Careline. My name is [Agent Name]. How may I assist you today?";
+    }
 
-</table>
+    if(message.toLowerCase().includes("email")){
+        reply =
+        "Agent must request customer email address and repeat it back for verification.";
+    }
 
-<h3>Strengths</h3>
-<ul>
-<li>Good greeting.</li>
-<li>Verified customer details correctly.</li>
-<li>Provided escalation information.</li>
-</ul>
+    if(message.toLowerCase().includes("complaint")){
+        reply =
+        "For complaint cases: Verify details, acknowledge emotion, create escalation ticket, and CSAT is not required.";
+    }
 
-<h3>Coaching Opportunities</h3>
-<ul>
-<li>Improve empathy statement.</li>
-<li>Always ask for CSAT survey participation.</li>
-<li>Repeat customer email for verification.</li>
-</ul>
+    chatBox.innerHTML += `
+        <div class="message bot">
+            ${reply}
+        </div>
+    `;
 
-`;
+    chatBox.scrollTop =
+    chatBox.scrollHeight;
+
+    input.value = "";
 
 }
+
+document
+.getElementById("userInput")
+.addEventListener("keypress", function(event){
+
+    if(event.key === "Enter"){
+        sendMessage();
+    }
+
+});
 
 </script>
 
