@@ -6,54 +6,145 @@
 <title>Ask Loora</title>
 
 <style>
-body{
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
     font-family: Arial, sans-serif;
-    background: #f4f6f9;
-    margin: 0;
+}
+
+/* BACKGROUND */
+body{
+    background:#F0F3FA;
+    display:flex;
+    flex-direction:column;
+    height:100vh;
 }
 
 /* HEADER */
 .header{
-    text-align: center;
-    padding: 30px 20px;
-    background: linear-gradient(135deg, #4a90e2, #7b61ff);
-    color: white;
+    text-align:center;
+    padding:25px 15px;
+    background: linear-gradient(135deg, #473C8B, #EE5F8D);
+    color:white;
+}
+
+.header img{
+    width:60px;
+    margin-bottom:8px;
 }
 
 .header h1{
-    margin: 0;
-    font-size: 32px;
-    font-weight: bold;
+    font-size:28px;
 }
 
 .header p{
-    margin-top: 8px;
-    font-size: 14px;
-    opacity: 0.9;
+    font-size:13px;
+    opacity:0.9;
 }
 
-/* CHAT BOX (optional style) */
-.container{
-    max-width: 800px;
-    margin: 30px auto;
-    padding: 20px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+/* CHAT AREA */
+.chat-container{
+    flex:1;
+    padding:20px;
+    overflow-y:auto;
+}
+
+/* MESSAGE BOX */
+.message{
+    max-width:70%;
+    padding:12px 15px;
+    margin:10px 0;
+    border-radius:12px;
+    font-size:14px;
+}
+
+/* BOT */
+.bot{
+    background:white;
+    align-self:flex-start;
+    border:1px solid #ddd;
+}
+
+/* USER */
+.user{
+    background:#473C8B;
+    color:white;
+    align-self:flex-end;
+    margin-left:auto;
+}
+
+/* INPUT AREA */
+.input-area{
+    display:flex;
+    padding:15px;
+    background:white;
+    border-top:1px solid #ddd;
+}
+
+.input-area input{
+    flex:1;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    outline:none;
+}
+
+.input-area button{
+    margin-left:10px;
+    padding:12px 18px;
+    border:none;
+    background:#EE5F8D;
+    color:white;
+    border-radius:8px;
+    cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
+<!-- HEADER -->
 <div class="header">
+    <img src="logo.png" alt="Loora Logo">
     <h1>Ask Loora</h1>
     <p>Loora AI Assistant - QA Knowledge Support System</p>
 </div>
 
-<div class="container">
-    <!-- chatbot content kau letak sini -->
+<!-- CHAT -->
+<div class="chat-container" id="chat">
+    <div class="message bot">Hi 👋 I am Loora. How can I help you today?</div>
 </div>
+
+<!-- INPUT -->
+<div class="input-area">
+    <input type="text" id="input" placeholder="Type your message...">
+    <button onclick="sendMessage()">Send</button>
+</div>
+
+<script>
+function sendMessage(){
+    let input = document.getElementById("input");
+    let chat = document.getElementById("chat");
+
+    if(input.value.trim() === "") return;
+
+    // user message
+    let userMsg = document.createElement("div");
+    userMsg.className = "message user";
+    userMsg.innerText = input.value;
+    chat.appendChild(userMsg);
+
+    // bot reply (simple demo)
+    let botMsg = document.createElement("div");
+    botMsg.className = "message bot";
+    botMsg.innerText = "I received: " + input.value;
+    chat.appendChild(botMsg);
+
+    input.value = "";
+    chat.scrollTop = chat.scrollHeight;
+}
+</script>
 
 </body>
 </html>
