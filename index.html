@@ -15,13 +15,8 @@
 }
 
 body{
-    font-family:'Segoe UI', Arial, sans-serif;
-    background:linear-gradient(
-        135deg,
-        #D9DCE3 0%,
-        #F2F4F8 50%,
-        #FFFFFF 100%
-    );
+    font-family: Arial, sans-serif;
+    background:#f4f6f9;
     height:100vh;
     display:flex;
     justify-content:center;
@@ -30,11 +25,11 @@ body{
 
 .chat-container{
     width:90%;
-    max-width:950px;
+    max-width:900px;
     height:90vh;
     background:white;
-    border-radius:20px;
-    box-shadow:0 15px 40px rgba(75,63,146,0.15);
+    border-radius:15px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.15);
     display:flex;
     flex-direction:column;
     overflow:hidden;
@@ -43,86 +38,61 @@ body{
 .header{
     background:#4B3F92;
     color:white;
-    padding:15px 25px;
-    display:flex;
-    align-items:center;
-    position:relative;
-}
-
-.logo-section img{
-    height:45px;
-    width:auto;
-}
-
-.title-section{
-    position:absolute;
-    left:50%;
-    transform:translateX(-50%);
-    font-size:28px;
-    font-weight:700;
-    letter-spacing:0.5px;
+    padding:20px;
+    font-size:22px;
+    font-weight:bold;
+    text-align:center;
 }
 
 .chat-box{
     flex:1;
     padding:20px;
     overflow-y:auto;
-    background:#F7F8FC;
+    background:#f7f9fc;
 }
 
 .message{
     margin-bottom:15px;
     max-width:75%;
-    padding:12px 15px;
-    border-radius:15px;
-    line-height:1.6;
-    word-wrap:break-word;
+    padding:12px;
+    border-radius:12px;
+    line-height:1.5;
 }
 
 .user{
     background:#4B3F92;
     color:white;
     margin-left:auto;
-    border-bottom-right-radius:5px;
 }
 
 .bot{
-    background:#F7F3FF;
-    border:1px solid #E5DFFF;
-    color:#333;
-    border-bottom-left-radius:5px;
+    background:white;
+    border:1px solid #ddd;
 }
 
 .input-area{
     display:flex;
     padding:15px;
+    border-top:1px solid #ddd;
     background:white;
-    border-top:1px solid #eee;
 }
 
 input{
     flex:1;
-    padding:14px;
-    border:1px solid #ddd;
-    border-radius:10px;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
     font-size:15px;
-    outline:none;
-}
-
-input:focus{
-    border-color:#4B3F92;
 }
 
 button{
     margin-left:10px;
-    padding:14px 25px;
+    padding:12px 25px;
     border:none;
     background:#E35D91;
     color:white;
-    border-radius:10px;
+    border-radius:8px;
     cursor:pointer;
-    font-weight:bold;
-    transition:0.3s;
 }
 
 button:hover{
@@ -139,15 +109,7 @@ button:hover{
 
 ```
 <div class="header">
-
-    <div class="logo-section">
-        <img src="logo.png" alt="Company Logo">
-    </div>
-
-    <div class="title-section">
-        Ask Loora
-    </div>
-
+    Ask Loora
 </div>
 
 <div class="chat-box" id="chatBox">
@@ -201,33 +163,21 @@ function sendMessage(){
     `;
 
     let reply =
-    "Thank you for your question. AI integration will be connected in the next phase.";
+    "Thank you for your question. AI integration will be connected in the next step.";
 
-    let msg = message.toLowerCase();
-
-    if(msg.includes("greeting") || msg.includes("greet")){
+    if(message.toLowerCase().includes("greeting")){
         reply =
         "Good morning/afternoon, thank you for calling ABC Retail Careline. My name is [Agent Name]. How may I assist you today?";
     }
 
-    else if(msg.includes("email") || msg.includes("probing")){
+    if(message.toLowerCase().includes("email")){
         reply =
-        "Agent must request the customer's email address and repeat it back for verification.";
+        "Agent must request customer email address and repeat it back for verification.";
     }
 
-    else if(msg.includes("complaint")){
+    if(message.toLowerCase().includes("complaint")){
         reply =
-        "For complaint cases: Verify details, acknowledge customer concerns, create escalation ticket and document the issue clearly.";
-    }
-
-    else if(msg.includes("empathy") || msg.includes("emotion")){
-        reply =
-        "Use empathy statements such as: 'I understand how frustrating this situation must be for you.'";
-    }
-
-    else if(msg.includes("score")){
-        reply =
-        "Please paste the call transcript and I will assist with QA evaluation criteria.";
+        "For complaint cases: Verify details, acknowledge emotion, create escalation ticket, and CSAT is not required.";
     }
 
     chatBox.innerHTML += `
