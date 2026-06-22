@@ -1,238 +1,249 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ask Loora</title>
+<title>AI Assistant</title>
 
 <style>
 
+/* RESET */
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family:'Segoe UI', sans-serif;
 }
 
+/* BRAND BACKGROUND */
 body{
-    background:#f4f6f9;
     height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
+
+    background: linear-gradient(
+        135deg,
+        #483D8C 0%,
+        #6A5ACD 35%,
+        #DA6F9B 100%
+    );
 }
 
+/* MAIN CHAT BOX */
 .chat-container{
-    width:90%;
+    width:92%;
     max-width:900px;
     height:90vh;
-    background:white;
-    border-radius:16px;
-    box-shadow:0 8px 25px rgba(0,0,0,0.12);
+    background:rgba(255,255,255,0.95);
+    border-radius:18px;
+    overflow:hidden;
     display:flex;
     flex-direction:column;
-    overflow:hidden;
+    box-shadow:0 15px 40px rgba(0,0,0,0.25);
 }
 
+/* HEADER */
 .header{
-    background:white;
-    border-bottom:1px solid #e5e7eb;
-    padding:16px;
+    background:linear-gradient(90deg,#483D8C,#DA6F9B);
+    color:white;
+    padding:18px;
     text-align:center;
 }
 
 .title{
     font-size:20px;
     font-weight:600;
-    color:#4B3F92;
 }
 
 .subtitle{
     font-size:12px;
-    color:#888;
-    margin-top:3px;
+    opacity:0.9;
 }
 
+/* CHAT AREA */
 .chat-box{
     flex:1;
     padding:20px;
     overflow-y:auto;
-    background:#f8f9fc;
+    background:#f6f7fb;
 }
 
+/* MESSAGE STYLE */
 .message{
-    margin-bottom:12px;
     max-width:75%;
-    padding:10px 14px;
-    border-radius:12px;
-    line-height:1.5;
+    padding:12px 14px;
+    margin-bottom:12px;
+    border-radius:14px;
     font-size:14px;
+    line-height:1.5;
+    animation:fadeIn 0.2s ease-in-out;
 }
 
+@keyframes fadeIn{
+    from{opacity:0; transform:translateY(6px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+/* USER */
 .user{
-    background:#4B3F92;
+    background:#483D8C;
     color:white;
     margin-left:auto;
+    border-bottom-right-radius:4px;
 }
 
+/* BOT */
 .bot{
     background:white;
     border:1px solid #e5e7eb;
     color:#333;
+    border-bottom-left-radius:4px;
 }
 
+/* INPUT AREA */
 .input-area{
     display:flex;
-    padding:15px;
-    border-top:1px solid #e5e7eb;
+    padding:12px;
+    border-top:1px solid #ddd;
     background:white;
 }
 
 input{
     flex:1;
     padding:12px;
-    border:1px solid #d1d5db;
+    border:1px solid #ddd;
     border-radius:10px;
-    font-size:14px;
     outline:none;
 }
 
 input:focus{
-    border-color:#4B3F92;
+    border-color:#483D8C;
 }
 
 button{
     margin-left:10px;
-    padding:12px 22px;
+    padding:12px 18px;
     border:none;
-    background:#E35D91;
-    color:white;
     border-radius:10px;
+    background:#DA6F9B;
+    color:white;
     cursor:pointer;
-    font-size:14px;
     font-weight:500;
 }
 
-button:hover{
-    background:#D24A80;
+button:disabled{
+    opacity:0.6;
+}
+
+/* typing */
+.typing{
+    font-style:italic;
+    color:#888;
+    font-size:13px;
 }
 
 </style>
-
 </head>
 
 <body>
 
 <div class="chat-container">
 
-```
-<div class="header">
-    <div class="title">Ask Loora</div>
-    <div class="subtitle">QA Knowledge Assistant</div>
-</div>
-
-<div class="chat-box" id="chatBox">
-
-    <div class="message bot">
-        <strong>Welcome to Ask Loora</strong><br><br>
-
-        Your QA Knowledge Assistant.<br><br>
-
-        Ask me about:
-        <br>• Greeting
-        <br>• Email Verification
-        <br>• Complaint Handling
-        <br>• Empathy
-        <br>• Quality Standards
+    <!-- HEADER -->
+    <div class="header">
+        <div class="title">Loora AI Assistant</div>
+        <div class="subtitle">QA Knowledge Support System</div>
     </div>
 
-</div>
+    <!-- CHAT BOX -->
+    <div class="chat-box" id="chatBox">
 
-<div class="input-area">
+        <div class="message bot">
+            👋 Hi! I’m your AI Assistant.<br><br>
+            You can ask me about QA rules, handling process, or support workflow.
+        </div>
 
-    <input
-        type="text"
-        id="userInput"
-        placeholder="Ask Loora anything..."
-    >
+    </div>
 
-    <button onclick="sendMessage()">
-        Send
-    </button>
-
-</div>
-```
+    <!-- INPUT -->
+    <div class="input-area">
+        <input id="userInput" placeholder="Type your message...">
+        <button id="sendBtn" onclick="sendMessage()">Send</button>
+    </div>
 
 </div>
 
 <script>
 
+function getReply(text){
+
+    text = text.toLowerCase();
+
+    if(text.includes("greeting")){
+        return "Hi 👋 How may I assist you today?";
+    }
+
+    if(text.includes("email")){
+        return "Please request customer email and repeat it back for verification.";
+    }
+
+    if(text.includes("complaint")){
+        return "Acknowledge issue, show empathy, and escalate if necessary.";
+    }
+
+    if(text.includes("empathy")){
+        return "Example: I understand how frustrating this situation must be for you.";
+    }
+
+    return "Thank you for your question. AI system will be connected soon.";
+}
+
 function sendMessage(){
 
-    let input =
-    document.getElementById("userInput");
+    let input = document.getElementById("userInput");
+    let text = input.value.trim();
+    if(text === "") return;
 
-    let message =
-    input.value.trim();
+    let chatBox = document.getElementById("chatBox");
+    let btn = document.getElementById("sendBtn");
 
-    if(message === ""){
-        return;
-    }
-
-    let chatBox =
-    document.getElementById("chatBox");
-
-    chatBox.innerHTML += `
-        <div class="message user">
-            ${message}
-        </div>
-    `;
-
-    let reply =
-    "Thank you for your question. AI integration will be connected in the next step.";
-
-    if(message.toLowerCase().includes("greeting")){
-        reply =
-        "Hi, ABC. I am [Agent Name]. How may I assist you today?";
-    }
-
-    if(message.toLowerCase().includes("email")){
-        reply =
-        "Agent must request the customer's email address and repeat it back for verification.";
-    }
-
-    if(message.toLowerCase().includes("complaint")){
-        reply =
-        "Verify details, acknowledge customer emotions and create an escalation ticket when required.";
-    }
-
-    if(message.toLowerCase().includes("empathy")){
-        reply =
-        "Use empathy statements such as: I understand how frustrating this situation must be for you.";
-    }
-
-    chatBox.innerHTML += `
-        <div class="message bot">
-            ${reply}
-        </div>
-    `;
-
-    chatBox.scrollTop =
-    chatBox.scrollHeight;
-
+    // USER MESSAGE
+    chatBox.innerHTML += `<div class="message user">${text}</div>`;
     input.value = "";
+
+    // typing
+    let typing = document.createElement("div");
+    typing.className = "message bot typing";
+    typing.innerHTML = "AI is thinking...";
+    chatBox.appendChild(typing);
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    btn.disabled = true;
+
+    setTimeout(() => {
+
+        typing.remove();
+
+        let reply = getReply(text);
+
+        chatBox.innerHTML += `<div class="message bot">${reply}</div>`;
+
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        btn.disabled = false;
+
+    }, 900);
 
 }
 
-document
-.getElementById("userInput")
-.addEventListener("keypress", function(event){
-
-    if(event.key === "Enter"){
+// ENTER KEY
+document.getElementById("userInput")
+.addEventListener("keypress", function(e){
+    if(e.key === "Enter"){
         sendMessage();
     }
-
 });
 
 </script>
